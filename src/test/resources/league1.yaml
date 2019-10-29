@@ -1,0 +1,4 @@
+- name: Ligue 1
+  url: https://fr.wikipedia.org/wiki/Championnat_de_France_de_football_%s-%s
+- name: Serie A
+  url: https://fr.wikipedia.org/wiki/Championnat_d'Italie_de_football_%s-%s

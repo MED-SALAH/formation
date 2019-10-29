@@ -15,6 +15,7 @@
 		<project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
 		<scresourcesala.version>2.11</scresourcesala.version>
 		<scala-library.version>2.11.8</scala-library.version>
+		<scala.version>2.11</scala.version>
 		<spark.version>2.3.0</spark.version>
 	</properties>
 
