@@ -51,6 +51,10 @@ object  HelloWorld {
     maxPointLeagues.show()
     val maxPointslsJoin = StatUtilisSpark.getLSJointMaxPoints(ligStanding)
     maxPointslsJoin.show()
+    maxPointslsJoin.repartition(1).write
+      .format("com.databricks.spark.csv")
+      .option("header", "true")
+      .save("maxPointLsJoin.csv")
 
 
 
