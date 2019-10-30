@@ -210,7 +210,7 @@ class StatTestSpark extends FlatSpec{
     result.show()
     expected.show()
     //When
-    assert(expected.collect().sameElements(result.collect()))
+    assert(expected.collect().toList == result.collect().toList)
 
   }
 
