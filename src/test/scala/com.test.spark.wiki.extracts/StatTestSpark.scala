@@ -201,7 +201,7 @@ class StatTestSpark extends FlatSpec{
 
     val leagueStanding10 = ("Liga",2018,1,"FC Barcelone",87,38,26,9,3,105,36,54.0,93)
     val leagueStanding11 = ("Liga",2018,2,"Atlético de Madrid",76,38,22,10,6,105,29,26.0,93)
-    val leagueStanding12 = ("Liga",2018,3,"Real Madrid",68,38,21,5,12,63,46,17.0,93)
+    val leagueStanding12 = ("Liga",2018,3,"Raal Madrid",68,38,21,5,12,63,46,17.0,93)
     val expected = spark.createDataFrame(Seq(leagueStanding1,leagueStanding3,leagueStanding2,
       leagueStanding4,leagueStanding5,leagueStanding6,leagueStanding7,leagueStanding8,leagueStanding9,
       leagueStanding10,leagueStanding11,leagueStanding12))
@@ -210,7 +210,7 @@ class StatTestSpark extends FlatSpec{
     result.show()
     expected.show()
     //When
-    assert(expected.collect().toList == result.collect().toList)
+    assert(result.collect().sameElements(expected.collect()))
 
   }
 

@@ -1,23 +1,21 @@
 package com.test.spark.wiki.extracts
-import org.apache.spark.{SparkConf, SparkContext}
-import ImpliciteBigapps._
+import com.test.spark.wiki.extracts.ImpliciteBigapps._
 import org.apache.spark.sql.SparkSession
 
 object  HelloWorld {
-  implicit  val  spark: SparkSession=SparkSession
-    .builder()
-    .master("local[*]")
-    .getOrCreate()
+
+
   def main(args: Array[String]): Unit = {
+    implicit  val  spark: SparkSession=SparkSession
+      .builder()
+      .master("local[*]")
+      .getOrCreate()
 
-
-
-
-    val conf = new SparkConf()
+/*    val conf = new SparkConf()
     conf.setMaster("local")
     conf.setAppName("Word Count")
     val sc = new SparkContext(conf)
-
+*/
     // Load the text into a Spark RDD, which is a distributed representation of each line of text
     //val textFile = sc.textFile("C:/spark/spark-2.4.4-bin-hadoop2.7/README.md")
 
