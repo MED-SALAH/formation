@@ -43,6 +43,15 @@ object  HelloWorld {
     avgGolsSeason.show()
     val mostTitleTeam = StatUtilisSpark.getMostTitelTeam(ligStanding)
     mostTitleTeam.show()
+    val avgPointWiner = StatUtilisSpark.getAveragePointWinner(ligStanding)
+    avgPointWiner.show()
+    val groupBys = StatUtilisSpark.groupByLs(ligStanding)
+    groupBys.show()
+    val maxPointLeagues = StatUtilisSpark.getMaxPointLeague(ligStanding)
+    maxPointLeagues.show()
+    val maxPointslsJoin = StatUtilisSpark.getLSJointMaxPoints(ligStanding)
+    maxPointslsJoin.show()
+
 
 
   }
