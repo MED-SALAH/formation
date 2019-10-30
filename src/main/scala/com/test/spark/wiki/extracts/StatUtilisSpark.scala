@@ -10,6 +10,13 @@ import scala.collection.JavaConversions._
 
 
 object StatUtilisSpark {
+  def getMaxPointLeague(leagueStandingDS: Dataset[LeagueStanding]): Dataset[LeagueMaxPoints]= {
+    leagueStandingDS.repartition($"league")
+      .filter(_.position==1)
+      .groupBy("league")
+      .agg(max("points")).map(l => LeagueMaxPoints(l.getString(0),l.getInt(1)))
+  }
+
   def getDelta(leagueStandingPoints: List[Int]): Int ={
 
     val head = leagueStandingPoints.head

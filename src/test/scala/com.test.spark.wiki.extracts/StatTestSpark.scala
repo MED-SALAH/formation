@@ -107,21 +107,6 @@ class StatTestSpark extends FlatSpec{
   }
   "ce test permet de grouper par league et season les leagueStanding et calcule la difference de points" should "OK" in {
     //Given
-    val leagueStanding1 = LeagueStanding("Ligue 1",2017,1,"Paris Saint-Germain",93,38,29,6,3,108,29,79)
-    val leagueStanding2 = LeagueStanding("Ligue 1",2017,2,"AS Monaco",80,38,24,8,6,85,45,40)
-    val leagueStanding3 = LeagueStanding("Ligue 1",2017,3,"Olympique lyonnais",78,38,23,9,6,87,43,44)
-
-    val leagueStanding4 = LeagueStanding("Ligue 1",2018,1,"Paris Saint-Germain",91,38,29,4,5,105,35,70)
-    val leagueStanding5 = LeagueStanding("Ligue 1",2018,2,"LOSC",75,38,22,9,7,68,33,35)
-    val leagueStanding6 = LeagueStanding("Ligue 1",2018,3,"lympique lyonnais",72,38,21,9,8,70,47,23)
-
-    val leagueStanding7 = LeagueStanding("Liga",2017,1,"FC Barcelone",93,38,28,9,1,99,29,70)
-    val leagueStanding8 = LeagueStanding("Liga",2017,2,"Atlético de Madrid",79,38,23,10,5,58,22,36)
-    val leagueStanding9 = LeagueStanding("Liga",2017,3,"Real Madrid",76,38,22,10,6,94,44,50)
-
-    val leagueStanding10 = LeagueStanding("Liga",2018,1,"FC Barcelone",87,38,26,9,3,105,36,54)
-    val leagueStanding11 = LeagueStanding("Liga",2018,2,"Atlético de Madrid",76,38,22,10,6,105,29,26)
-    val leagueStanding12 = LeagueStanding("Liga",2018,3,"Raal Madrid",68,38,21,5,12,63,46,17)
     val leagueStandingDS = getDataSetLeagueDS()
     val expected  = spark.createDataFrame(Seq(("Ligue 1",2017,13),("Liga",2018,11)))
 
@@ -135,13 +120,7 @@ class StatTestSpark extends FlatSpec{
     assert(result.collect().sameElements(expected.collect()))
   }
 
-  "ce test permet de calculer la difference de points entre la premiere et la deuxieme equipe du championnat" should "ok" in {
 
-  }
-
-  "ce test permet de retourner la saison la plus serée d'une ligue" should "ok" in {
-
-  }
   "calcule de difference entre des listes" should "OK" in {
     //Given
     val leagueStanding1 = LeagueStanding("Ligue 1",2017,1,"Paris Saint-Germain",93,38,29,6,3,108,29,79)
@@ -155,6 +134,25 @@ class StatTestSpark extends FlatSpec{
     println("Teste diff - the result",result)
     //Then
     assert(expected==result)
+  }
+  "ce test permet de calculer le maximum de points pour chaque league" should "ok" in {
+    //Given
+    val leagueStandingDS = getDataSetLeagueDS()
+    val leagMax1 = LeagueMaxPoints("Ligue 1", 93)
+    val leagMax2 = LeagueMaxPoints("Liga", 93)
+    val expected= spark.createDataset(Seq(leagMax1,leagMax2))//.as[LeagueMaxPoints]
+
+    //Then
+    val result = StatUtilisSpark.getMaxPointLeague(leagueStandingDS)
+    result.show()
+    expected.show()
+    //When
+    assert(expected.collect().sameElements(result.collect()))
+
+  }
+
+  "ce test permet de retourner la saison la plus serée d'une ligue" should "ok" in {
+
   }
 
   def getDataSetLeagueDS():Dataset[LeagueStanding]={
