@@ -39,6 +39,10 @@ object  HelloWorld {
 
     val ligStanding = seasonDs.flatMap(s => SeasonScraper.scraper(s))
     ligStanding.toDF().show()
+    val avgGolsSeason = StatUtilisSpark.getAverageGoalsbySeason(seasonDs)
+    avgGolsSeason.show()
+    val mostTitleTeam = StatUtilisSpark.getMostTitelTeam(ligStanding)
+    mostTitleTeam.show()
 
 
   }
