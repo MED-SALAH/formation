@@ -1,10 +1,13 @@
 package com.test.spark.wiki.extracts
 
-import org.apache.spark.sql.Dataset
+import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.FlatSpec
 
 class LeagueUtilisTest extends FlatSpec{
-  import ImpliciteBigapps._
+  implicit  val  spark: SparkSession=SparkSession
+    .builder()
+    .master("local[*]")
+    .getOrCreate()
   "convert Seq to Ds when Sequence Not empty file" should "OK" in {
     //Given
     val seqleag:Seq[League] = Seq(League("name","url"))

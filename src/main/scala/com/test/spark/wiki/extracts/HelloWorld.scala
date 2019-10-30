@@ -1,9 +1,13 @@
 package com.test.spark.wiki.extracts
 import org.apache.spark.{SparkConf, SparkContext}
 import ImpliciteBigapps._
+import org.apache.spark.sql.SparkSession
 
 object  HelloWorld {
-
+  implicit  val  spark: SparkSession=SparkSession
+    .builder()
+    .master("local[*]")
+    .getOrCreate()
   def main(args: Array[String]): Unit = {
 
 

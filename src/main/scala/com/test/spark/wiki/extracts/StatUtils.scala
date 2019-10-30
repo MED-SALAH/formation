@@ -1,11 +1,12 @@
 package com.test.spark.wiki.extracts
 
+import org.apache.spark.sql.SparkSession
 import org.jsoup.Jsoup
 //import scala.collection.JavaConversions._
 
 
 object StatUtils {
-  def getAveragePointWinner(ligue: Seq[League]): Seq[AveragePointWinner] ={
+  def getAveragePointWinner(ligue: Seq[League])(implicit spark:SparkSession): Seq[AveragePointWinner] ={
     //val createdYear = getCreatedYear(ligue)
     val createdYear = 2014
     //val currentYear = Year.now.getValue

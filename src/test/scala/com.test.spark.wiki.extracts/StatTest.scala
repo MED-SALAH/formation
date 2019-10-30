@@ -1,8 +1,14 @@
 package com.test.spark.wiki.extracts
 
+import org.apache.spark.sql.SparkSession
 import org.scalatest.FlatSpec
 
 class StatTest extends FlatSpec{
+
+  implicit  val  spark: SparkSession=SparkSession
+    .builder()
+    .master("local[*]")
+    .getOrCreate()
 
   "la moyenne des butes" should "OK" in {
     //Given

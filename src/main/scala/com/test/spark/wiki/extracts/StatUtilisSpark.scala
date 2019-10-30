@@ -1,7 +1,9 @@
 package com.test.spark.wiki.extracts
 
 import com.test.spark.wiki.extracts.ImpliciteBigapps._
-import com.test.spark.wiki.extracts.ImpliciteBigapps.spark.implicits._
+import org.apache.spark.sql.SparkSession
+//import com.test.spark.wiki.extracts.ImpliciteBigapps.spark.implicits._
+import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, Dataset}
 import org.jsoup.Jsoup
@@ -10,7 +12,48 @@ import scala.collection.JavaConversions._
 
 
 object StatUtilisSpark {
-  def getMaxPointLeague(leagueStandingDS: Dataset[LeagueStanding]): Dataset[LeagueMaxPoints]= {
+  def getLSJoinedByMaxWindowFunctionSQL(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)] = {
+    leagueStandingDS.createOrReplaceTempView("leagueStandigsTable")
+    spark.sql(
+      """
+        |select *, max(points) OVER(PARTITION BY league) as maxPoints
+        |from leagueStandigsTable
+        |
+        |""".stripMargin
+    ).as[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)]
+
+  }
+
+  def getLSJoinedByMaxWindowFunction(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession):Dataset[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)] ={
+    leagueStandingDS.repartition(col("league"))
+      .withColumn("maxPoints",max(col("points"))
+      .over(Window.partitionBy("league"))).as[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)]
+  }
+
+  def getMostTitelTeamSQL(leagueStandingsDS: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[MostTitleTeamSpark] ={
+    leagueStandingsDS.createOrReplaceTempView("leagueStandigsTable")
+    spark.sql(
+      """
+        |select league, team, count(*) as count
+        |from leagueStandigsTable
+        |where position == "1"
+        |group by league, team
+        |order by league
+        |
+        |""".stripMargin).as[MostTitleTeamSpark]
+
+  }
+
+
+  def getLSJointMaxPoints(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession):DataFrame ={
+    val maxLsDS = getMaxPointLeague(leagueStandingDS)
+    leagueStandingDS.join(maxLsDS, "league")
+      //leagueStandingDS.col("league").equalTo(maxLsDS.col("league")),
+      //joinType = "left")
+  }
+
+  def getMaxPointLeague(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[LeagueMaxPoints]= {
+    import spark.implicits._
     leagueStandingDS.repartition($"league")
       .filter(_.position==1)
       .groupBy("league")
@@ -30,7 +73,8 @@ object StatUtilisSpark {
 
   }
 
-  def groupByLs(leagueStandingDS: Dataset[LeagueStanding]): DataFrame ={
+  def groupByLs(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession): DataFrame ={
+    import spark.implicits._
     getFirstSecondLs(leagueStandingDS)
       .groupBy("league","season")
       .agg(collect_list($"points"))
@@ -53,7 +97,8 @@ object StatUtilisSpark {
 
   }
 
-  def getAveragePointWinner(liguest: Dataset[LeagueStanding]): Dataset[AveragePointWinnerSpark] ={
+  def getAveragePointWinner(liguest: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[AveragePointWinnerSpark] ={
+    import spark.implicits._
     liguest
       .repartition($"league")
       .filter(_.position == 1)
@@ -64,9 +109,9 @@ object StatUtilisSpark {
   }
 
 
-  def getMostTitelTeam(liguest: Dataset[LeagueStanding]): Dataset[MostTitleTeamSpark] ={
+  def getMostTitelTeam(liguest: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[MostTitleTeamSpark] ={
 
-    //println(liguest.collect().toList)
+    import spark.implicits._
     val teamMostTitls = liguest
       .repartition($"league")
       .filter(_.position == 1)

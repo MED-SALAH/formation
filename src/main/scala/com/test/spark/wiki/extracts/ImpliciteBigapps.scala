@@ -1,6 +1,6 @@
 package com.test.spark.wiki.extracts
 
-import org.apache.spark.sql.{Encoders, SparkSession}
+import org.apache.spark.sql.Encoders
 
 object ImpliciteBigapps {
 
@@ -12,15 +12,11 @@ object ImpliciteBigapps {
   implicit val encd5 = Encoders.product[AveragePointWinner]
   implicit val encd6 = Encoders.product[LeagueStanding]
   implicit val encd8 = Encoders.product[LeagueMaxPoints]
+  implicit val encd9 = Encoders.product[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)]
   //implicit val encd7 = Encoders.product[LeagueSeasonPoints]
 
 
 
-
-  implicit  val  spark: SparkSession=SparkSession
-    .builder()
-    .master("local[*]")
-    .getOrCreate()
 
 
 }
