@@ -1,8 +1,8 @@
 package com.test.spark.wiki.extracts
 
+import com.test.spark.wiki.extracts.ImpliciteBigapps._
+import org.apache.spark.sql.Dataset
 import org.scalatest.FlatSpec
-import ImpliciteBigapps._
-import org.apache.spark.sql.{DataFrame, Dataset}
 
 class StatTestSpark extends FlatSpec{
   "La moyenne de butes" should "OK" in {
@@ -123,16 +123,16 @@ class StatTestSpark extends FlatSpec{
     val leagueStanding11 = LeagueStanding("Liga",2018,2,"Atlético de Madrid",76,38,22,10,6,105,29,26)
     val leagueStanding12 = LeagueStanding("Liga",2018,3,"Raal Madrid",68,38,21,5,12,63,46,17)
     val leagueStandingDS = getDataSetLeagueDS()
-    val expected  = Seq(("League 1",13),("Liga",11))
+    val expected  = spark.createDataFrame(Seq(("Ligue 1",2017,13),("Liga",2018,11)))
 
     //When
-    val result:DataFrame = StatUtilisSpark.groupByLs(leagueStandingDS)
+    val result = StatUtilisSpark.groupByLs(leagueStandingDS)
 
     result.show()
 
     //Then
 
-    assert(result.collect().toList == expected.toList)
+    assert(result.collect().sameElements(expected.collect()))
   }
 
   "ce test permet de calculer la difference de points entre la premiere et la deuxieme equipe du championnat" should "ok" in {
@@ -147,12 +147,14 @@ class StatTestSpark extends FlatSpec{
     val leagueStanding1 = LeagueStanding("Ligue 1",2017,1,"Paris Saint-Germain",93,38,29,6,3,108,29,79)
     val leagueStanding2 = LeagueStanding("Ligue 1",2017,2,"AS Monaco",80,38,24,8,6,85,45,40)
     val leagueStanding3 = LeagueStanding("Ligue 1",2017,3,"Olympique lyonnais",78,38,23,9,6,87,43,44)
-    val leagueStandingLS = spark.createDataset(List(leagueStanding1,leagueStanding2,leagueStanding3))
-    val expected = List(15,leagueStandingLS)
+    val leagueStandingLS = List(leagueStanding1,leagueStanding2,leagueStanding3)
+    val expected = 15
     //When
-    val result:DataFrame = StatUtilisSpark.groupByLs(leagueStandingLS)
+    val result = StatUtilisSpark.getDelta(leagueStandingLS.map(_.points))
+    println("Teste diff - the expected",expected)
+    println("Teste diff - the result",result)
     //Then
-    assert(expected.collect().sameElements(result.collect().toList))
+    assert(expected==result)
   }
 
   def getDataSetLeagueDS():Dataset[LeagueStanding]={

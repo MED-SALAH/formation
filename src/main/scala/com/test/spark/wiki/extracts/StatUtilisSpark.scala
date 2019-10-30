@@ -6,27 +6,36 @@ import org.apache.spark.sql.functions._
 import org.apache.spark.sql.{DataFrame, Dataset}
 import org.jsoup.Jsoup
 
+import scala.collection.JavaConversions._
+
 
 object StatUtilisSpark {
-  def getDelta(leagueStandingLS: LeagueStanding): DataFrame[getTightenLS] ={
-    val init = getTightenLS(0,leagueStandingLS.season)
-    val cuurent =
-    leagueStandingLS.foldLeft((a,b)=>(a.points - b.points)))
-    val head = leagueStandingLS.head
-    val tail = leagueStandingLS.tail
+  def getDelta(leagueStandingPoints: List[Int]): Int ={
 
-    tail.fold
+    val head = leagueStandingPoints.head
+    val tail = leagueStandingPoints.tail
+    val init:(Int,Int) = (0,head)
+    tail.foldLeft(init)((previousDeltat:(Int,Int),currentPoint:Int)=>{
+      val prevDeltat:Int = previousDeltat._1
+      val prevPoint: Int = previousDeltat._2
+      (prevDeltat + (prevPoint-currentPoint), currentPoint)
+    })._1
 
-    spark.createDataFrame(Seq())
   }
 
   def groupByLs(leagueStandingDS: Dataset[LeagueStanding]): DataFrame ={
-    val test = getFirstSecondLs(leagueStandingDS)
+    getFirstSecondLs(leagueStandingDS)
       .groupBy("league","season")
-      .agg(first(col("points"))
-        .minus(last(col("points"))).as("Diff")).orderBy("season").show()
-        //.groupBy("league","season").agg(min("Diff")).orderBy("Diff").first()
-    spark.createDataFrame(Seq())
+      .agg(collect_list($"points"))
+      .map(x => LeagueSeasonPoints(x.getString(0),x.getInt(1),getDelta(x.getList(2).toList)))
+      .sort("league","listPoints").groupBy("league")
+        .agg(
+          first("season").as("season"),
+          first("listPoints").as("listPoints")
+        )
+
+
+    //spark.createDataFrame(Seq())
 
   }
 

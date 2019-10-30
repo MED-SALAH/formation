@@ -10,6 +10,7 @@ object ImpliciteBigapps {
   implicit val encd7 = Encoders.product[MostTitleTeamSpark]
   implicit val encd5 = Encoders.product[AveragePointWinner]
   implicit val encd6 = Encoders.product[LeagueStanding]
+  //implicit val encd7 = Encoders.product[LeagueSeasonPoints]
 
 
 
