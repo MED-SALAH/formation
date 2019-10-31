@@ -41,6 +41,7 @@ object  HelloWorld {
     ligStanding.toDF().show()
     val avgGolsSeason = StatUtilisSpark.getAverageGoalsbySeason(seasonDs)
     avgGolsSeason.show()
+    println("Moste titled team ===>")
     val mostTitleTeam = StatUtilisSpark.getMostTitelTeam(ligStanding)
     mostTitleTeam.show()
     val avgPointWiner = StatUtilisSpark.getAveragePointWinner(ligStanding)

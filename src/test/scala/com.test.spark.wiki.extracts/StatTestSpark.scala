@@ -41,11 +41,11 @@ class StatTestSpark extends FlatSpec{
 
   "Get Moste Title Team" should "OK" in{
     //Given
-    val ligue20171 = LeagueStanding("Ligue 1",2017,1,"Paris Saint-Germain",93,38,29,6,3,108,29,79)
-    val ligue20172 = LeagueStanding("Ligue 1",2017,2,"AS Monaco",80,38,24,8,6,85,45,40)
+    val ligue20171 = LeagueStanding("Ligue 1",2017,2,"Paris Saint-Germain",93,38,29,6,3,108,29,79)
+    val ligue20172 = LeagueStanding("Ligue 1",2017,1,"AS Monaco",80,38,24,8,6,85,45,40)
     val ligue20181 = LeagueStanding("Ligue 1",2018,1,"Paris Saint-Germain",91,38,29,4,5,105,35,70)
     val ligue20182 = LeagueStanding("Ligue 1",2018,2,"LOSC",75,38,22,9,7,68,33,35)
-    val ligueA20171 = LeagueStanding("LigueA",2017,1,"FC Barcelone",93,38,28,9,1,99,29,70)
+    val ligueA20171 = LeagueStanding("Ligue 1",2016,1,"AS Monaco",93,38,28,9,1,99,29,70)
     val ligueA20172 = LeagueStanding("LigueA",2017,2,"Atlético de Madrid",79,38,23,10,5,58,22,36)
     val ligueA20181 = LeagueStanding("LigueA",2018,1,"FC Barcelone",87,38,26,9,3,90,36,54)
     val ligueA20182 = LeagueStanding("LigueA",2018,2,"Atlético de Madrid",76,38,22,10,6,55,29,26)
@@ -57,8 +57,8 @@ class StatTestSpark extends FlatSpec{
 
     //When
     val result:Dataset[MostTitleTeamSpark] = StatUtilisSpark.getMostTitelTeam(leaguestandings)
-    println("Teste 3 - the expected",expected)
-    println("Teste 3 - the result",result.collectAsList())
+    //println("Teste 3 - the expected",expected)
+    //println("Teste 3 - the result",result.collectAsList())
     //Then
     assert(expected.sameElements(result.collect()))
   }

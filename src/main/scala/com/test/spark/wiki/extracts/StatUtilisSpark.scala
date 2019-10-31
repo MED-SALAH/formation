@@ -116,8 +116,8 @@ object StatUtilisSpark {
       .repartition($"league")
       .filter(_.position == 1)
       .groupBy("league","team")
-      .count()
-
+      .count().groupBy("league","team")
+      .agg(max("count")).groupBy("league").agg(first("team"))
     teamMostTitls.map(t=> MostTitleTeamSpark(t.getString(0),t.getString(1))).orderBy($"league")
 
 
