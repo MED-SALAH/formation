@@ -1,7 +1,7 @@
 package com.test.spark.wiki.extracts
+
 import com.test.spark.wiki.extracts.ImpliciteBigapps._
 import org.apache.spark.sql.SparkSession
-
 object  HelloWorld {
 
 
