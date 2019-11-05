@@ -1,8 +1,9 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.utils
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.test.spark.wiki.extracts.domains.League
 
 object Parser {
 

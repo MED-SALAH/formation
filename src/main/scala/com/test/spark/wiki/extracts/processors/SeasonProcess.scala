@@ -1,9 +1,10 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.processors
 
+import com.test.spark.wiki.extracts.domains.{League, Season}
 import org.apache.spark.sql.Dataset
-import ImpliciteBigapps._
+import com.test.spark.wiki.extracts.domains.ImpliciteBigapps._
 
-object SeasonUtils {
+object SeasonProcess {
   def leagtoSeason(league:League, debut:Int, fin:Int): Seq[Season] = {
     (debut to fin).toList.map(year => Season(league.name,league.url.format(year,year+1),year))
 

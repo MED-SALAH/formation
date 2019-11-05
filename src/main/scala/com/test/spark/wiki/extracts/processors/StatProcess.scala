@@ -1,17 +1,17 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.processors
 
-import com.test.spark.wiki.extracts.ImpliciteBigapps._
-import org.apache.spark.sql.SparkSession
-//import com.test.spark.wiki.extracts.ImpliciteBigapps.spark.implicits._
+import com.test.spark.wiki.extracts.domains
+import com.test.spark.wiki.extracts.domains._
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions._
-import org.apache.spark.sql.{DataFrame, Dataset}
+import org.apache.spark.sql.functions.{col, collect_list, first, max}
+import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.jsoup.Jsoup
-
+import com.test.spark.wiki.extracts.domains.ImpliciteBigapps._
+import com.test.spark.wiki.extracts.utils.SeasonScraper
 import scala.collection.JavaConversions._
+import org.apache.spark.sql.functions._
 
-
-object StatUtilisSpark {
+object StatProcess {
   def getLSJoinedByMaxWindowFunctionSQL(leagueStandingDS: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[(String,Int,Int,String,Int,Int,Int,Int,Int,Int,Int,Double,Int)] = {
     leagueStandingDS.createOrReplaceTempView("leagueStandigsTable")
     spark.sql(
@@ -112,13 +112,27 @@ object StatUtilisSpark {
   def getMostTitelTeam(liguest: Dataset[LeagueStanding])(implicit spark:SparkSession): Dataset[MostTitleTeamSpark] ={
 
     import spark.implicits._
+
+
+    liguest.show()
+
     val teamMostTitls = liguest
       .repartition($"league")
       .filter(_.position == 1)
-      .groupBy("league","team")
-      .count().groupBy("league","team")
-      .agg(max("count")).groupBy("league").agg(first("team"))
-    teamMostTitls.map(t=> MostTitleTeamSpark(t.getString(0),t.getString(1))).orderBy($"league")
+      .groupBy("league", "team")
+      .count()
+      .orderBy(asc("league"), desc("count"))
+
+    val df =   teamMostTitls
+
+    df.groupBy("league")
+      .agg(
+        first("team").as("team"),
+        first("count").as("nbrwins"))
+
+    teamMostTitls.show()
+
+    teamMostTitls.map(t=> MostTitleTeamSpark(t.getString(0),t.getLong(2).toInt,t.getString(1))).orderBy($"league")
 
 
 
@@ -136,7 +150,7 @@ object StatUtilisSpark {
   def getAverageGoalsbySeason(season: Dataset[Season]): Dataset[AvrageGols] ={
     season.map(s =>{
       val data = SeasonScraper.scraper(s)
-      AvrageGols(s,data.map(l=> (l.goalsFor.toDouble/data.length)).reduce((a,b)=>a+b))
+      domains.AvrageGols(s,data.map(l=> (l.goalsFor.toDouble/data.length)).reduce((a, b)=>a+b))
     })
   }
 

@@ -1,4 +1,4 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.domains
 
 case class LeagueStanding(league: String,
                           season: Int,

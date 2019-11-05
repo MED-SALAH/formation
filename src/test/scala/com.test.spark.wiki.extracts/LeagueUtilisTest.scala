@@ -1,5 +1,7 @@
 package com.test.spark.wiki.extracts
 
+import com.test.spark.wiki.extracts.processors.LeagueProcess
+import com.test.spark.wiki.extracts.domains.League
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.FlatSpec
 
@@ -14,7 +16,7 @@ class LeagueUtilisTest extends FlatSpec{
     val expected = Array(League("name","url"))
 
     //When
-    val result:Dataset[League] = LeagueUtils.convert(seqleag)
+    val result:Dataset[League] = LeagueProcess.convert(seqleag)
     println("le Resultat ===", result)
     println("le Expected ===", expected)
     //Then

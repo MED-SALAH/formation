@@ -1,10 +1,8 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.utils
 
+import com.test.spark.wiki.extracts.domains.{LeagueStanding, Season}
 import org.jsoup.Jsoup
-
-
 import scala.collection.JavaConversions._
-
 object SeasonScraper {
   def scraper(saison:Season): Seq[LeagueStanding] ={
 

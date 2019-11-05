@@ -1,5 +1,7 @@
 package com.test.spark.wiki.extracts
 
+import com.test.spark.wiki.extracts.domains.{LeagueStanding, Season}
+import com.test.spark.wiki.extracts.utils.SeasonScraper
 import org.scalatest.FlatSpec
 
 class ScraperTest extends FlatSpec{

@@ -1,4 +1,4 @@
-package com.test.spark.wiki.extracts
+package com.test.spark.wiki.extracts.domains
 
 import org.apache.spark.sql.Encoders
 

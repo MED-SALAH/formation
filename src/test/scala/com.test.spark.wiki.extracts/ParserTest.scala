@@ -1,4 +1,6 @@
 package com.test.spark.wiki.extracts
+import com.test.spark.wiki.extracts.domains.League
+import com.test.spark.wiki.extracts.utils.Parser
 import org.scalatest.FlatSpec
 
 class ParserTest extends FlatSpec{

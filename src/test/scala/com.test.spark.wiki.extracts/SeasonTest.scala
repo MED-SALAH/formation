@@ -1,5 +1,7 @@
 package com.test.spark.wiki.extracts
 
+import com.test.spark.wiki.extracts.processors.{LeagueProcess, SeasonProcess}
+import com.test.spark.wiki.extracts.domains.{League, Season}
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.FlatSpec
 
@@ -10,10 +12,10 @@ class SeasonTest extends FlatSpec{
     .getOrCreate()
   "convert Dataset league to season" should "OK" in {
     //Given
-    val leagueDs:Dataset[League] = LeagueUtils.convert(Seq(League("league1","https://example")))
+    val leagueDs:Dataset[League] = LeagueProcess.convert(Seq(League("league1","https://example")))
     val expected = Seq(Season("league1","https://example",2018),Season("league1","https://example",2019))
     //when
-    val result:Dataset[Season] = SeasonUtils.convertoseason(leagueDs,y1=2018,y2=2019)
+    val result:Dataset[Season] = SeasonProcess.convertoseason(leagueDs,y1=2018,y2=2019)
 
     //then
     assert(result.collect().toList == expected)
@@ -28,7 +30,7 @@ class SeasonTest extends FlatSpec{
     val expected = Seq(saison2018,saison2019)
 
     //When
-    val result:Seq[Season] = SeasonUtils.leagtoSeason(league,datedebut,datefin)
+    val result:Seq[Season] = SeasonProcess.leagtoSeason(league,datedebut,datefin)
 
     //Then
     assert(result==expected)
