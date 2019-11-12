@@ -26,18 +26,18 @@ object KafkaSparkCassandraApp {
   def main(args: Array[String]) {
 
     // read the configuration file
-    val sparkConf = new SparkConf().setAppName("Transaction")
+    val sparkConf = new SparkConf().setMaster("local[*]").setAppName("Transaction")
 
     // get the values we need out of the config file
-    val cassandra_host = sparkConf.get("spark.cassandra.connection.host","35.180.46.40:8042"); //cassandra host
+    val cassandra_host = sparkConf.get("spark.cassandra.connection.host","35.180.46.40"); //cassandra host
    // val cassandra_user = sparkConf.get("spark.cassandra.auth.username")
    // val cassandra_pass = sparkConf.get("spark.cassandra.auth.password")
 
     // connect directly to Cassandra from the driver to create the keyspace
     val cluster = Cluster.builder().addContactPoint(cassandra_host).build()
     val session = cluster.connect()
-    session.execute("CREATE KEYSPACE IF NOT EXISTS Transaction WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };")
-    session.execute("CREATE TABLE IF NOT EXISTS Transaction.transaction (id_transaction text, amount double,  PRIMARY KEY(id_transaction)) ")
+    session.execute("CREATE KEYSPACE IF NOT EXISTS TransactionKS WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };")
+    session.execute("CREATE TABLE IF NOT EXISTS TransactionKS.transactionTB (id_transaction text, amount double,  PRIMARY KEY(id_transaction)) ")
     session.close()
 
     // Create spark streaming context with 5 second batch interval
