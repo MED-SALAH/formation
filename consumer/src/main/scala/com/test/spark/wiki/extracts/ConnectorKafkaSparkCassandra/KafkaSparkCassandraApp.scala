@@ -3,7 +3,6 @@ package com.test.spark.wiki.extracts.ConnectorKafkaSparkCassandra
 import java.io.FileReader
 import java.util.Properties
 import scala.collection.JavaConversions._
-
 // Basic Spark imports
 import org.apache.spark.streaming._
 import org.apache.spark.{SparkConf, SparkContext}

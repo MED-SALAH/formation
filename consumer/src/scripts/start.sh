@@ -1,1 +1,1 @@
-java -cp producer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.bigapps.kafka.transaction.ProducerApp
+java -cp consumer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.test.spark.wiki.extracts.ConnectorKafkaSparkCassandra.KafkaSparkCassandraApp
