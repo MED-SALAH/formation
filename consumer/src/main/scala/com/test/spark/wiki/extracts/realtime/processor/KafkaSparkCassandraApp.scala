@@ -2,6 +2,11 @@ package com.test.spark.wiki.extracts.realtime.processor
 
 import java.io.FileReader
 import java.util.Properties
+
+import kafka.consumer.ConsumerConfig
+import org.apache.kafka.clients.producer.ProducerConfig
+import org.apache.kafka.common.serialization.{LongDeserializer, LongSerializer, StringDeserializer, StringSerializer}
+
 import scala.collection.JavaConversions._
 // Basic Spark imports
 import org.apache.spark.streaming._
@@ -57,6 +62,14 @@ object KafkaSparkCassandraApp {
     // load the kafka.properties file
     val kafkaProps = new Properties()
     kafkaProps.load(new FileReader("kafka.properties"))
+
+    kafkaProps.put("bootstrap.servers", "15.188.51.222:9092")
+    kafkaProps.put("key.deserializer", classOf[LongDeserializer].getName)
+    kafkaProps.put("value.deserializer", classOf[StringDeserializer].getName)
+    kafkaProps.put("group.id", "SparkKafkaCassandra")
+    kafkaProps.put("auto.offset.reset" ,"latest")
+    kafkaProps.put("enable.auto.commit" , (false: java.lang.Boolean))
+
     val kafkaParams = kafkaProps.toMap[String, String]
 
     // Create direct Kafka stream on the wordcount-input topic
