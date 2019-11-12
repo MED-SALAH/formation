@@ -1,11 +1,8 @@
 package com.test.spark.wiki.extracts.realtime.processor
 
-import java.io.FileReader
 import java.util.Properties
 
-import kafka.consumer.ConsumerConfig
-import org.apache.kafka.clients.producer.ProducerConfig
-import org.apache.kafka.common.serialization.{LongDeserializer, LongSerializer, StringDeserializer, StringSerializer}
+import org.apache.kafka.common.serialization.{LongDeserializer, StringDeserializer}
 
 import scala.collection.JavaConversions._
 // Basic Spark imports
@@ -24,7 +21,6 @@ import org.apache.spark.streaming.kafka010._
 import com.datastax.driver.core.Cluster
 
 // Date import for processing logic
-import java.util.Date
 
 object KafkaSparkCassandraApp {
 
