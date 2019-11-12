@@ -29,7 +29,7 @@ object KafkaSparkCassandraApp {
     val sparkConf = new SparkConf().setAppName("Transaction")
 
     // get the values we need out of the config file
-    val cassandra_host = sparkConf.get("spark.cassandra.connection.host","172.31.41.238:8042"); //cassandra host
+    val cassandra_host = sparkConf.get("spark.cassandra.connection.host","35.180.46.40:8042"); //cassandra host
    // val cassandra_user = sparkConf.get("spark.cassandra.auth.username")
    // val cassandra_pass = sparkConf.get("spark.cassandra.auth.password")
 
