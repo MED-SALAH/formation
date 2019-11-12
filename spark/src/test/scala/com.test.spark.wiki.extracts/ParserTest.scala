@@ -18,7 +18,7 @@ class ParserTest extends FlatSpec{
   }
   "parser leagues.yml when one league" should "OK" in {
     //Given
-    val leagueFilePath = "league1.yaml"
+    val leagueFilePath = "src/test/resources/league1.yaml"
     val ligue1 = League("Ligue 1","https://fr.wikipedia.org/wiki/Championnat_de_France_de_football_%s-%s")
     val ligue2 = League("Serie A","https://fr.wikipedia.org/wiki/Championnat_d'Italie_de_football_%s-%s")
     val expected = Array(ligue1,ligue2)

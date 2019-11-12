@@ -37,7 +37,7 @@ object  LeaguesApp {
     counts.saveAsTextFile("/tmp/shakespeareWordCount")*/
 
     //
-    val leagueFilePath = "leagues.yaml"
+    val leagueFilePath = "src/test/resources/leagues.yaml"
     val doc = Parser.parse(leagueFilePath)
     println(doc)
     val ligDs = LeagueProcess.convert(doc)
