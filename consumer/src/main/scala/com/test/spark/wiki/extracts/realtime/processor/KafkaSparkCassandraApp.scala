@@ -1,4 +1,4 @@
-package com.test.spark.wiki.extracts.ConnectorKafkaSparkCassandra
+package com.test.spark.wiki.extracts.realtime.processor
 
 import java.io.FileReader
 import java.util.Properties

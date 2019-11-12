@@ -1,1 +1,1 @@
-java -cp consumer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.test.spark.wiki.extracts.ConnectorKafkaSparkCassandra.KafkaSparkCassandraApp
+java -cp consumer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.test.spark.wiki.extracts.realtime.processor.KafkaSparkCassandraApp
