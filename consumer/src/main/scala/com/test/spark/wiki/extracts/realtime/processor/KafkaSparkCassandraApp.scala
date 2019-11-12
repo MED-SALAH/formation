@@ -61,8 +61,6 @@ object KafkaSparkCassandraApp {
 
     // load the kafka.properties file
     val kafkaProps = new Properties()
-    kafkaProps.load(new FileReader("kafka.properties"))
-
     kafkaProps.put("bootstrap.servers", "15.188.51.222:9092")
     kafkaProps.put("key.deserializer", classOf[LongDeserializer].getName)
     kafkaProps.put("value.deserializer", classOf[StringDeserializer].getName)
