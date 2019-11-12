@@ -66,7 +66,7 @@ object KafkaSparkCassandraApp {
     kafkaProps.put("value.deserializer", classOf[StringDeserializer].getName)
     kafkaProps.put("group.id", "SparkKafkaCassandra")
     kafkaProps.put("auto.offset.reset" ,"latest")
-    kafkaProps.put("enable.auto.commit" , (false: java.lang.Boolean))
+    kafkaProps.put("enable.auto.commit" , "false")
 
     val kafkaParams = kafkaProps.toMap[String, String]
 
