@@ -1,6 +1,5 @@
 package com.bigapps.kafka.transaction.producer;
-
-import com.bigapps.kafka.transaction.domain.Transaction;
+import com.test.spark.wiki.extracts.domains.Transaction;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.*;
@@ -19,7 +18,6 @@ public class TransactionProducer {
 
     static final Producer<Long, String> p = createProducer();
 
-
     private static Producer<Long, String> createProducer() {
         Properties props = new Properties();
 
@@ -33,10 +31,7 @@ public class TransactionProducer {
     }
 
     public static void sendTransaction(Transaction tx) throws IOException, ExecutionException, InterruptedException {
-
         ProducerRecord<Long, String> record = new ProducerRecord<>(TOPIC, objectMapper.writeValueAsString(tx));
         p.send(record).get();
-
-
     }
 }

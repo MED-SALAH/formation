@@ -1,13 +1,10 @@
 package com.test.spark.wiki.extracts
 
+import com.datastax.spark.connector._
 import com.test.spark.wiki.extracts.domains.ImpliciteBigapps._
 import com.test.spark.wiki.extracts.processors.{LeagueProcess, SeasonProcess, StatProcess}
 import com.test.spark.wiki.extracts.utils.{Parser, SeasonScraper}
 import org.apache.spark.sql.SparkSession
-
-
-import com.datastax.spark.connector._
-import org.apache.spark.sql.cassandra._
 
 object  LeaguesApp {
 
