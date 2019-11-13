@@ -19,7 +19,7 @@ object KafkaSparkStreaming {
 
 
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "15.188.51.222:9092",
+      "bootstrap.servers" -> "http://15.188.51.222:9092",
       "key.deserializer" -> classOf[LongDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
       "group.id" -> "use_a_separate_group_id_for_each_stream",
