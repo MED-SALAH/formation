@@ -1,39 +1,33 @@
 package com.test.spark.wiki.extracts.realtime.processor
+
 import java.util.Date
 
-import com.datastax.spark.connector.writer.SqlRowWriter
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.test.spark.wiki.extracts.domains.{FormationConfig, HeartBeatCs, TX}
 import org.apache.kafka.common.serialization.{LongDeserializer, StringDeserializer}
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.SparkConf
+import org.apache.spark.sql.{Encoders, SparkSession}
 import org.apache.spark.streaming.dstream.InputDStream
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.KafkaUtils
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
-import org.apache.spark.streaming.kafka010._
-import org.apache.spark.streaming.{Milliseconds, Seconds, StreamingContext}
-import com.test.spark.wiki.extracts.domains.{AccountType, FormationConfig, TX, Transaction}
-import org.apache.spark.sql.{Encoders, SQLContext, SparkSession}
-import org.apache.spark.streaming.{State, StateSpec, Time}
-
-
-object KafkaSparkStreaming {
-
+import org.apache.spark.streaming.{Milliseconds, State, StateSpec, StreamingContext}
+object HeartBeatsConsumerApp {
 
   val objectMapper = new ObjectMapper()
   objectMapper.registerModule(DefaultScalaModule)
 
-  def parse(json:String):TX = {
-    objectMapper.readValue(json, classOf[TX])
+  def parse(json:String):HeartBeatCs = {
+    objectMapper.readValue(json, classOf[HeartBeatCs])
   }
 
   def main(args: Array[String]): Unit = {
 
-    implicit val  encoder = Encoders.product[TX]
-
+    implicit val  encoder = Encoders.product[HeartBeatCs]
     // read the configuration file
-    val sparkConf = new SparkConf().setAppName("Transaction")
+    val sparkConf = new SparkConf().setAppName("HeartBeat")
     sparkConf.setIfMissing("spark.master", "local[*]")
-    sparkConf.set("spark.cassandra.connection.host", FormationConfig.CASSANDRA_HOST)
     sparkConf.set("spark.streaming.backpressure.enabled", "true")
 
     val spark = SparkSession.builder().config(sparkConf).getOrCreate()
@@ -41,9 +35,6 @@ object KafkaSparkStreaming {
     val sc = spark.sparkContext
     val ssc = new StreamingContext(sc, Milliseconds(500))
     ssc.checkpoint("./chekpoint")
-
-
-
 
     println(s"Starting....Listen to ${FormationConfig.BOOTSTRAP_SERVERS}")
 
@@ -56,54 +47,42 @@ object KafkaSparkStreaming {
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )
 
-    val topicsSet = Array("Transaction")
+    val topicsSet = Array("HeartBeat")
 
     val stream: InputDStream[org.apache.kafka.clients.consumer.ConsumerRecord[Long, String]] =  KafkaUtils.createDirectStream(ssc,
       PreferConsistent,
       Subscribe[Long,String](topicsSet,kafkaParams))
-    val transactionDSm: org.apache.spark.streaming.dstream.DStream[(AccountType, TX)] = stream
+    val HeartBeatDSm : org.apache.spark.streaming.dstream.DStream[(String,HeartBeatCs)] = stream
       .map( record =>{
-        val tx = parse(record.value)
-        val accounttype = AccountType(tx.account, tx.atype)
-        (accounttype, tx)
+        val v = parse(record.value)
+        (v.appname, v)
       })
 
+    val updateState = (appname: String, heartbeat:Option[HeartBeatCs], state: State[Long]) => {
 
-    val updateState = (accounttype: AccountType, tx: Option[TX], state: State[TX]) => {
-
-      val defaultTX = TX("-1", accounttype.atype, new Date().getTime(),  accounttype.account, Double.MinValue)
-
-      val prevMax: Option[TX] = state.getOption()
-
-      val transactionMax: TX = tx.getOrElse(defaultTX)
-
-      (prevMax, transactionMax) match {
-        case (None, max) => {
-          println(s">>> --------------------------------- <<<")
-          println(s">>> key       = $accounttype")
-          println(s">>> value     = $tx")
-          println(s">>> state     = $state")
-          println(s">>> MAX     = $max")
-          state.update(max)
-          Some((accounttype, tx, max)) // mapped value
+      val defaultHeartBeatCs= HeartBeatCs("",  new Date().getTime())
+      val prevHeartBeat: Option[Long] = state.getOption()
+      val currentHeartbeat: HeartBeatCs = heartbeat.getOrElse(defaultHeartBeatCs)
+      (prevHeartBeat, currentHeartbeat) match {
+        case (None,currentHeartbeat) => {
+          state.update(currentHeartbeat.adate)
+          Some((currentHeartbeat.appname, currentHeartbeat, currentHeartbeat.adate))
         }
 
-        case (Some(prevMax), currentMax) => {
-          if(prevMax.amount < currentMax.amount){
-            println(s">>> --------------------------------- <<<")
-            println(s">>> key       = $accounttype")
-            println(s">>> value     = $tx")
-            println(s">>> state     = $state")
-            println(s">>> MAX     = $currentMax")
-            state.update(currentMax)
-            Some((accounttype, tx, currentMax)) // mapped value
+        case (Some(prevHeartBeat),currentHeartbeat) => {
+          if (currentHeartbeat.adate-prevHeartBeat>15000){
+            println("L'application " + appname + " N'a pas envoyer de données depuis " +(currentHeartbeat.adate-prevHeartBeat))
           }
+
+          state.update(currentHeartbeat.adate)
+          Some((currentHeartbeat.appname, "Missing Signal"))
         }
+
       }
 
     }
     val spec = StateSpec.function(updateState)
-    val mappedStatefulStream = transactionDSm.mapWithState(spec)
+    val mappedStatefulStream = HeartBeatDSm.mapWithState(spec)
 
     mappedStatefulStream.print()
 
@@ -116,6 +95,6 @@ object KafkaSparkStreaming {
     ssc.start() // start the streaming context
     ssc.awaitTermination() // block while the context is running (until it's stopped by the timer)
     ssc.stop() // this additional stop seems to be required
-
   }
+
 }

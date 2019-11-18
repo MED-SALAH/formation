@@ -1,1 +1,1 @@
-java -cp producer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.bigapps.kafka.transaction.ProducerApp
+java -cp producer-1.0.0-SNAPSHOT-jar-with-dependencies.jar  com.bigapps.kafka.transaction.TransactionApp

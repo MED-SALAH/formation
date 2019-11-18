@@ -112,7 +112,7 @@
                     <archive>
                         <index>true</index>
                         <manifest>
-                            <mainClass>com.bigapps.kafka.transaction.ProducerApp</mainClass>
+                            <mainClass>com.bigapps.kafka.transaction.TransactionApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

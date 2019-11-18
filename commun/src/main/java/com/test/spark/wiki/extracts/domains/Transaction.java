@@ -2,19 +2,21 @@ package com.test.spark.wiki.extracts.domains;
 
 import lombok.*;
 
-import java.io.Serializable;
-
 @Builder
-public class Transaction implements Serializable{
+public class Transaction implements FormationBean{
     private String id;
     private double amount;
     private String type;
     private Long date;
     private String account;
 
-    public Transaction(){
-
+    @Override
+    public String getTopic() {
+        return FormationConfig.TRANSACTION_TOPIC;
     }
+
+    public Transaction(){}
+
     public Transaction(String id, double amount, String type, Long date, String account) {
         this.id = id;
         this.amount = amount;
@@ -62,4 +64,5 @@ public class Transaction implements Serializable{
     public void setAccount(String account) {
         this.account = account;
     }
+
 }

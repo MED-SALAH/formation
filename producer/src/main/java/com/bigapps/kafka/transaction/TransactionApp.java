@@ -1,17 +1,19 @@
 package com.bigapps.kafka.transaction;
 
+import com.test.spark.wiki.extracts.domains.FormationConfig;
 import com.test.spark.wiki.extracts.domains.Transaction;
-import com.bigapps.kafka.transaction.producer.TransactionProducer;
 import org.apache.log4j.BasicConfigurator;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
-public class ProducerApp {
+public class TransactionApp {
 
     public static void main(String...args) throws IOException, ExecutionException, InterruptedException {
         BasicConfigurator.configure();
+
+        TransactionProducer transactionProducer = new TransactionProducer();
         for (int i =0; i<100; i++){
             int accountId = i%3;
             Transaction tx = Transaction.builder()
@@ -21,7 +23,7 @@ public class ProducerApp {
                     .type("CHEQUE")
                     .amount(Math.random()*1000)
                     .build();
-            TransactionProducer.sendTransaction(tx);
+            transactionProducer.send(tx, FormationConfig.TRANSACTION_TOPIC);
         }
     }
 }
