@@ -1,9 +1,8 @@
 package com.test.spark.wiki.extracts.bddprocessing.steps
 
-import com.test.spark.wiki.extracts.utils.{Parser, ParserUtils}
+import com.test.spark.wiki.extracts.utils.ParserUtils
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
-import javafx.scene.chart.PieChart.Data
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.scalatest.Matchers
 
