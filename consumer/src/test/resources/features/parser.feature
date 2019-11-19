@@ -17,13 +17,18 @@ Scenario: récuperer la ligne telle quelle
     | 18 |
 
 
-Scenario: récuperer le
+Scenario: récuperer le schema
     Given la table suivante :
     | name:String   |  age:Integer      |
     | A             | 18                |
     | B             | 20                |
 
-    When lors ce que j'appelle le parser
+    When lors ce que j'appelle le parser :
 
-    Then j'aurai le count suivant :
-    | A |
+    Then j'aurai le schema de name suivant :
+    | String |
+
+    And j'aurai le schema de age suivant :
+    | Integer |
+
+

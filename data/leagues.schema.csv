@@ -1,0 +1,1 @@
+league;season:Integer;position:Integer;team;points:Integer;played:Integer;won:Integer;drawn:Integer;lost:Integer;goalsFor:Integer;goalsAgainst:Integer;goalsDifference:Double;maxPoints:Integer

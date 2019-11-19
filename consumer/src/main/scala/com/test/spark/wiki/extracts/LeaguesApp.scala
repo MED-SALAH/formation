@@ -12,7 +12,6 @@ object  LeaguesApp {
   def main(args: Array[String]): Unit = {
     implicit  val  spark: SparkSession=SparkSession
       .builder()
-      .master("local[*]")
       .config("spark.cassandra.connection.host", "35.180.46.40")
       .getOrCreate()
 
@@ -34,7 +33,7 @@ object  LeaguesApp {
     counts.saveAsTextFile("/tmp/shakespeareWordCount")*/
 
     //
-    val leagueFilePath = "src/test/resources/leagues.yaml"
+    val leagueFilePath = args(0)
     val doc = Parser.parse(leagueFilePath)
     println(doc)
     val ligDs = LeagueProcess.convert(doc)
