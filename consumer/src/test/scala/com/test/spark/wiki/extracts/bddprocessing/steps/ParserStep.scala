@@ -1,6 +1,6 @@
 package com.test.spark.wiki.extracts.bddprocessing.steps
 
-import com.test.spark.wiki.extracts.utils.Parser
+import com.test.spark.wiki.extracts.utils.{Parser, ParserUtils}
 import cucumber.api.DataTable
 import cucumber.api.scala.{EN, ScalaDsl}
 import javafx.scene.chart.PieChart.Data
@@ -17,7 +17,7 @@ class ParserStep  extends EN with ScalaDsl with Matchers {
 
   var df: DataFrame = _
   Given("""^la table suivante :$""") { (table : DataTable) =>
-    df = Parser.parseDataTable(table)
+    df = ParserUtils.parseDataTable(table)
   }
 
   When("""^lors ce que j'appelle le parser$""") { () =>

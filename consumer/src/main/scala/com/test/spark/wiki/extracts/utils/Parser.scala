@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.test.spark.wiki.extracts.domains.League
-import cucumber.api.DataTable
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 
@@ -58,11 +57,6 @@ object Parser {
         val inputStream = getClass().getClassLoader().getResourceAsStream(path)
         mapper.readValue(inputStream, classOf[Array[League]]).toSeq
     }
-  }
-
-  def parseDataTable(table: DataTable)(implicit spark: SparkSession): DataFrame = {
-    val dataTableAsListOfList:List[JList[String]] = table.raw().toList
-    convertListToDF(dataTableAsListOfList)
   }
 
   def convertListToDF(dataTableAsListOfList:List[JList[String]])(implicit spark: SparkSession):DataFrame = {

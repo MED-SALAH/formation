@@ -13,23 +13,20 @@ object  HiveApp {
   def main(args: Array[String]): Unit = {
     implicit  val  spark: SparkSession=SparkSession
       .builder()
-      .master("local[*]")
       .config("spark.cassandra.connection.host", "35.180.46.40")
       .getOrCreate()
 
-    val headerFilePath = args(0)
-    val dataFilePath = args(1)
-    val reasulFilePath = args(2)
+    val dataFilePath = args(0)
+    val reasulFilePath = args(1)
 
-    println(s"headerFilePath => ${headerFilePath}")
     println(s"dataFilePath => ${dataFilePath}")
     println(s"reasulFilePath => ${reasulFilePath}")
 
-    val header =  spark.read.textFile(headerFilePath).collect()(0)
+    val header =  spark.read.textFile(dataFilePath).collect()(0)
 
     val schema:StructType = Parser.readSchemaFromHeader(header)
 
-    val df = spark.read.schema(schema).option("delimiter", ";").csv(dataFilePath)
+    val df = spark.read.schema(schema).option("delimiter", ";").option("header", "true").csv(dataFilePath)
 
     df.printSchema()
     df.show()

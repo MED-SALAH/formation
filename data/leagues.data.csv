@@ -1,3 +1,4 @@
+league;season:Integer;position:Integer;team;points:Integer;played:Integer;won:Integer;drawn:Integer;lost:Integer;goalsFor:Integer;goalsAgainst:Integer;goalsDifference:Double;maxPoints:Integer
 Ligue 1;2014;1;Paris Saint-Germain;83;38;24;11;3;83;36;47.0;96
 Ligue 1;2014;2;Olympique lyonnais;75;38;22;9;7;72;33;39.0;96
 Ligue 1;2014;3;AS Monaco FC;71;38;20;11;7;51;26;25.0;96
