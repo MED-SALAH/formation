@@ -6,4 +6,5 @@ object Implicit {
   implicit val encd1 = Encoders.product[Faits]
   implicit val encd2 = Encoders.product[FaitArtist]
   implicit val encd3 = Encoders.product[DeltaB]
+  implicit val encd4 = Encoders.product[Ener]
 }

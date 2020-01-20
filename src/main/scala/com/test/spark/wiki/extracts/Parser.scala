@@ -16,7 +16,7 @@ def read(FilePath:String)(implicit spark: SparkSession): Dataset[Faits] = {
     .option("inferSchema", "true")
     .csv(FilePath).as[Faits]
 
-  ds.filter(_.Id=="1")
+  ds.filter(_.id=="1")
   //data.filter(_.Energy == 117 )
   //data.show()
 }

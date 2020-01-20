@@ -1,6 +1,6 @@
 package com.test.spark.wiki.extracts
 
-case class Faits(Id:String, Track:String, Artist:String
+case class Faits(id:String, Track:String, Artist:String
                  , Genre:String, BeatsPerMinute:Int
                  , Energy:Int, Danceability:Int, LoudnessdB:Int
                  , Liveness:Int, Valence:Int
