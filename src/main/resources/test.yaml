@@ -1,0 +1,8 @@
+- name: fichierCsv
+  filepath: C:\\www\\formation2salah\\formation\\src\\main\\resources\\top50.csv
+- name: fichierSql
+  filepath: C:\\www\\formation2salah\\formation\\src\\main\\resources\\ingestion.sql
+- name: alert
+  filepath: C:\\www\\formation2salah\\formation\\src\\main\\resources\\alert.yaml
+
+

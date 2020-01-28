@@ -1,0 +1,6 @@
+- namealert: there more than 50% of 1
+  expression: if mbr 1 > 50 %
+  action: rejet
+- namealert: there more than 50% of 2
+  expression: if mbr 2 > 50 %
+  action: rejet
