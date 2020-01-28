@@ -9,6 +9,7 @@ object  HelloWorld {
 
 
 
+
     val conf = new SparkConf()
     conf.setMaster("local")
     conf.setAppName("Word Count")

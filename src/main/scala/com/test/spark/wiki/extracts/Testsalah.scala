@@ -2,6 +2,7 @@ package com.test.spark.wiki.extracts
 
 import org.apache.spark.sql.{DataFrame, Dataset, Encoders, SparkSession}
 import Implicit._
+import org.apache.spark.sql.execution.datasources.parquet.ParquetFileFormat
 import org.apache.spark.sql.functions._
 object Testsalah {
   implicit val saprk: SparkSession=SparkSession
@@ -22,6 +23,12 @@ object Testsalah {
         .option("inferSchema","true").option("delimiter",";")
         .csv(file)
     }
+    def readParquet(file:String)(implicit spark:SparkSession):DataFrame={
+      spark.read
+        .option("header","true")
+        .option("inferSchema","true").option("delimiter",";")
+        .parquet(file)
+    }
     println("hello Ds")
     val myDS = readcsvDS(file = "C:\\www\\formation2salah\\formation\\src\\main\\resources\\top50.csv")
     myDS.show()
@@ -39,6 +46,11 @@ object Testsalah {
     println("hello DF")
     val myDF = readcsvDF(file = "C:\\www\\formation2salah\\formation\\src\\main\\resources\\bfaitc.csv")
     myDF.show()
+    myDF.write.parquet("C:\\www\\formation2salah\\formation\\src\\main\\resources")
+    val myDfParquet = readParquet(file = "myDF-Parquet")
+    println("iciiiiii")
+    myDfParquet.show()
+    println("iciiiiii")
     //myDF.repartition(col("Langage")).filter(col("Langage") equals("C#")
 
    myDF.createOrReplaceTempView("DFtable")
