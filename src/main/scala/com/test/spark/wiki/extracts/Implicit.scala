@@ -10,4 +10,9 @@ object Implicit {
   implicit val encd5 = Encoders.product[RddFlux]
   implicit val encd6 = Encoders.product[NDF]
   implicit val encd7 = Encoders.product[Genre]
+  implicit val encd8 = Encoders.product[Montant]
+  implicit val encd9 = Encoders.product[TotaleMontantType]
+  implicit val encd10 = Encoders.product[Portfolio]
+  implicit val encd11 = Encoders.product[Deal]
+  implicit val encd12 = Encoders.product[Edge]
 }
