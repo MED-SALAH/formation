@@ -20,15 +20,15 @@ object Ingestion {
   def readfile(file:String):Seq[Flux]={
     val mapper = new ObjectMapper(new YAMLFactory())
     mapper.registerModule(DefaultScalaModule)
-    val inputStream = getClass().getClassLoader().getResourceAsStream(file)
+    val inputStream = getClass.getClassLoader.getResourceAsStream(file)
     mapper.readValue(inputStream, classOf[Array[Flux]])
 
   }
   def readalert(file:String):Seq[Alert]={
-    val mapper = new ObjectMapper(new YAMLFactory())
-    mapper.registerModule(DefaultScalaModule)
-    val inputStream = getClass().getClassLoader().getResourceAsStream(file)
-    mapper.readValue(inputStream, classOf[Array[Alert]])
+    val mapper2 = new ObjectMapper(new YAMLFactory())
+    mapper2.registerModule(DefaultScalaModule)
+    val inputStream = getClass.getClassLoader.getResourceAsStream(file)
+    mapper2.readValue(inputStream, classOf[Array[Alert]])
 
   }
 
