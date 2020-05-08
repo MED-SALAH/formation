@@ -1,0 +1,13 @@
+NID;PID;Type;Value
+root;;root;
+pf1;root;pf;
+pf2;root;pf;
+pf3;pf1;pf;
+pf4;pf1;pf;
+pf5;pf2;pf;
+pf6;pf2;pf;
+dl1;pf3;dl;10
+dl2;pf3;dl;20
+dl3;pf4;dl;30
+dl4;pf5;dl;40
+dl5;pf6;dl;50
